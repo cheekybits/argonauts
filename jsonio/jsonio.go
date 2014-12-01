@@ -8,43 +8,43 @@ import (
 	"io"
 )
 
-// JSONWriter writes JSON.
-type JSONWriter struct {
+// Writer writes JSON.
+type Writer struct {
 	e *json.Encoder
 }
 
-// NewWriter makes a new JSONWriter.
-func NewWriter(w io.Writer) *JSONWriter {
-	return &JSONWriter{e: json.NewEncoder(w)}
+// NewWriter makes a new Writer.
+func NewWriter(w io.Writer) *Writer {
+	return &Writer{e: json.NewEncoder(w)}
 }
 
 // Write writes the object.
-func (w *JSONWriter) Write(o interface{}) error {
+func (w *Writer) Write(o interface{}) error {
 	return w.e.Encode(o)
 }
 
 // WriteObj writes the map[string]interface{}.
-func (w *JSONWriter) WriteObj(o map[string]interface{}) error {
+func (w *Writer) WriteObj(o map[string]interface{}) error {
 	return w.Write(o)
 }
 
-// JSONReader reads JSON.
-type JSONReader struct {
+// Reader reads JSON.
+type Reader struct {
 	s    *bufio.Scanner
 	last interface{}
 	err  error
 }
 
-// NewReader makes a new JSONReader that will read
+// NewReader makes a new Reader that will read
 // from the specified Reader.
-func NewReader(r io.Reader) *JSONReader {
-	return &JSONReader{
+func NewReader(r io.Reader) *Reader {
+	return &Reader{
 		s: bufio.NewScanner(r),
 	}
 }
 
 // Next reads the next line of JSON.
-func (r *JSONReader) Next() bool {
+func (r *Reader) Next() bool {
 	if r.Err() != nil {
 		return false
 	}
@@ -53,7 +53,7 @@ func (r *JSONReader) Next() bool {
 }
 
 // Obj gets the next object or panics if it's not a JSON object.
-func (r *JSONReader) Obj() map[string]interface{} {
+func (r *Reader) Obj() map[string]interface{} {
 	obj, ok := r.ObjOK()
 	if !ok {
 		panic(r.err.Error())
@@ -63,7 +63,7 @@ func (r *JSONReader) Obj() map[string]interface{} {
 
 // ObjOK gets the next object, or returns false if it cannot.
 // Will not panic.
-func (r *JSONReader) ObjOK() (map[string]interface{}, bool) {
+func (r *Reader) ObjOK() (map[string]interface{}, bool) {
 	if r.last == nil {
 		if r.err = json.Unmarshal(r.s.Bytes(), &r.last); r.err != nil {
 			return nil, false
@@ -76,8 +76,8 @@ func (r *JSONReader) ObjOK() (map[string]interface{}, bool) {
 	return lastmap, ok
 }
 
-// Err gets the last error encountered by the JSONReader.
-func (r *JSONReader) Err() error {
+// Err gets the last error encountered by the Reader.
+func (r *Reader) Err() error {
 	if r.err != nil {
 		return r.err
 	}
