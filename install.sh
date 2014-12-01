@@ -9,3 +9,4 @@ function install {
 }
 
 install csvtojson
+install jsontrans
