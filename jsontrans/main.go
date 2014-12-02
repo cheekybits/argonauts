@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	if err := jsontrans.New(os.Stdin, os.Stdout, os.Args[1:]).Go(); err != nil {
+	if err := jsontrans.New(os.Stdin, os.Stdout, os.Args).Go(); err != nil {
 		log.Fatalln(err)
 	}
 }

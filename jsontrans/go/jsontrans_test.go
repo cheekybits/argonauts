@@ -46,7 +46,9 @@ func TestLower(t *testing.T) {
 		in := strings.NewReader(test.S)
 		var actualbuf bytes.Buffer
 		actual := &actualbuf
-		j := jsontrans.New(in, actual, test.A)
+		args := []string{"jsontrans"}
+		args = append(args, test.A...)
+		j := jsontrans.New(in, actual, args)
 		is.NoErr(j.Go())
 		is.Equal(strings.TrimRight(actual.String(), "\n"), test.E)
 

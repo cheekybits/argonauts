@@ -18,12 +18,12 @@ type Transformer struct {
 
 // New makes a new Transformer.
 func New(in io.Reader, out io.Writer, args []string) *Transformer {
-	fs := flag.NewFlagSet("name", flag.ExitOnError)
+	fs := flag.NewFlagSet(args[0], flag.ExitOnError)
 	var (
 		lowerfields = fs.Bool("lower", false, "make fields lowercase")
 		arraySize   = fs.Int("array", 0, "group objects into arrays of this size")
 	)
-	fs.Parse(args)
+	fs.Parse(args[1:])
 	return &Transformer{
 		r:           jsonio.NewReader(in),
 		w:           jsonio.NewWriter(out),
