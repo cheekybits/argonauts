@@ -11,11 +11,12 @@ import (
 // Writer writes JSON.
 type Writer struct {
 	e *json.Encoder
+	w io.Writer
 }
 
 // NewWriter makes a new Writer.
 func NewWriter(w io.Writer) *Writer {
-	return &Writer{e: json.NewEncoder(w)}
+	return &Writer{e: json.NewEncoder(w), w: w}
 }
 
 // Write writes the object.
@@ -23,8 +24,13 @@ func (w *Writer) Write(o interface{}) error {
 	return w.e.Encode(o)
 }
 
-// WriteObj writes the map[string]interface{}.
+// WriteObj writes the object map[string]interface{}.
 func (w *Writer) WriteObj(o map[string]interface{}) error {
+	return w.Write(o)
+}
+
+// WriteArray writes the array []map[string]interface{}.
+func (w *Writer) WriteArray(o []map[string]interface{}) error {
 	return w.Write(o)
 }
 

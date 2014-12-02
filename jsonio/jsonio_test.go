@@ -67,4 +67,8 @@ func TestWriter(t *testing.T) {
 	w.WriteObj(map[string]interface{}{"name": "Mat"})
 	is.Equal(jsonbuf.String(), `{"name":"Mat"}`+"\n")
 
+	buf.Reset()
+	w.WriteArray([]map[string]interface{}{{"name": "Mat"}, {"name": "Tyler"}})
+	is.Equal(jsonbuf.String(), `[{"name":"Mat"},{"name":"Tyler"}]`+"\n")
+
 }

@@ -9,7 +9,7 @@ import (
 	"github.com/cheekybits/is"
 )
 
-func TestTransformer(t *testing.T) {
+func TestLower(t *testing.T) {
 	is := is.New(t)
 
 	for _, test := range []struct {
@@ -21,6 +21,25 @@ func TestTransformer(t *testing.T) {
 			[]string{"-lower"},
 			`{"Field":"Value"}`,
 			`{"field":"Value"}`,
+		},
+		{
+			[]string{"-array=2"},
+			`{"item":1}
+{"item":2}
+{"item":3}
+{"item":4}
+{"item":5}
+{"item":6}
+{"item":7}
+{"item":8}
+{"item":9}
+{"item":10}
+`,
+			`[{"item":1},{"item":2}]
+[{"item":3},{"item":4}]
+[{"item":5},{"item":6}]
+[{"item":7},{"item":8}]
+[{"item":9},{"item":10}]`,
 		},
 	} {
 
